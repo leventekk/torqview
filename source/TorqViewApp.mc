@@ -3,11 +3,8 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 class TorqViewApp extends Application.AppBase {
-    protected var _viewInterval;
-
     public function initialize() {
         AppBase.initialize();
-        _viewInterval = SettingsService.getViewInterval();
     }
 
     public function onStart(state as Dictionary?) as Void {}
@@ -15,7 +12,7 @@ class TorqViewApp extends Application.AppBase {
     public function onStop(state as Dictionary?) as Void {}
 
     public function getInitialView() as Array<Views or InputDelegates>? {
-        var view = new TorqViewView(_viewInterval);
+        var view = new TorqViewField();
         return [view] as Array<Views or InputDelegates>;
     }
 }

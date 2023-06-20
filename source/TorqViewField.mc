@@ -3,11 +3,12 @@ import Toybox.Lang;
 import Toybox.Time;
 import Toybox.WatchUi;
 
-class TorqViewView extends WatchUi.SimpleDataField {
+class TorqViewField extends WatchUi.SimpleDataField {
     private var _CalculatorService;
 
-    function initialize(viewInterval) {
+    function initialize() {
         SimpleDataField.initialize();
+        var viewInterval = SettingsService.getViewInterval();
 
         label = formatLabel(viewInterval);
         _CalculatorService = new CalculatorService(viewInterval);
@@ -26,11 +27,6 @@ class TorqViewView extends WatchUi.SimpleDataField {
         _CalculatorService.store(info);
         var summary = _CalculatorService.get();
 
-        return (
-            Torque.calculateInNm(
-                summary["power"],
-                summary["cadence"]
-            ).toString() + " NM"
-        );
+        return Torque.calculateInNm(summary["power"], summary["cadence"]);
     }
 }
