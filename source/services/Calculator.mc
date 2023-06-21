@@ -3,37 +3,31 @@ import Toybox.Lang;
 import Toybox.Time;
 
 class CalculatorService {
-    private var _powerEntries = [] as Array<Number>;
-    private var _cadenceEntries = [] as Array<Number>;
+    private var _powerEntries as Array<Number> = [];
+    private var _cadenceEntries as Array<Number> = [];
 
-    private var _cadence = 0 as Number;
-    private var _power = 0 as Number;
+    private var _cadence as Number = 0;
+    private var _power as Number = 0;
 
-    private var _interval;
+    private var _interval as Number;
 
     public function initialize(timerInterval) {
         _interval = timerInterval;
     }
 
-    protected function calculate() as Void {
-        var entries = _powerEntries.size();
-        var cadenceSummary = 0;
-        var powerSummary = 0;
+    protected function calculate(list as Array<Number>) as Number {
+        var entries = list.size();
+        var summary = 0;
 
         if (entries < _interval) {
-            return;
+            return 0;
         }
 
         for (var i = 0; i < entries; i++) {
-            cadenceSummary += _cadenceEntries[i];
-            powerSummary += _powerEntries[i];
+            summary += list[i];
         }
 
-        _cadence = cadenceSummary / entries;
-        _power = powerSummary / entries;
-
-        _powerEntries = [];
-        _cadenceEntries = [];
+        return summary / entries;
     }
 
     public function store(info as Activity.Info) {
@@ -43,12 +37,17 @@ class CalculatorService {
         }
     }
 
-    public function get() {
-        calculate();
+    public function getCadence() {
+        _cadence = calculate(_cadenceEntries);
+        _cadenceEntries = [];
 
-        return {
-            "cadence" => _cadence as Number,
-            "power" => _power as Number,
-        };
+        return _cadence;
+    }
+
+    public function getPower() {
+        _power = calculate(_powerEntries);
+        _powerEntries = [];
+
+        return _power;
     }
 }

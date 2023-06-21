@@ -14,7 +14,7 @@ class TorqViewField extends WatchUi.SimpleDataField {
         _CalculatorService = new CalculatorService(viewInterval);
     }
 
-    private function formatLabel(interval) {
+    private function formatLabel(interval as Number) {
         if (interval > 1) {
             return interval.toString() + "s Torque";
         }
@@ -25,8 +25,9 @@ class TorqViewField extends WatchUi.SimpleDataField {
         info as Activity.Info
     ) as Numeric or Duration or String or Null {
         _CalculatorService.store(info);
-        var summary = _CalculatorService.get();
+        var power = _CalculatorService.getPower();
+        var cadence = _CalculatorService.getCadence();
 
-        return Torque.calculateInNm(summary["power"], summary["cadence"]);
+        return Torque.calculateInNm(power, cadence);
     }
 }
