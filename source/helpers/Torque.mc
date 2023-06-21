@@ -1,13 +1,32 @@
-class Torque {
-    static var NM_VALUE = 9.4588;
+import Toybox.Lang;
+using Toybox.Math;
 
-    public static function calculateInNm(power, cadence) {
+class Torque {
+    private static const FORMAT = "%d";
+
+    public static function calculateInNm(
+        power as Number,
+        cadence as Number
+    ) as String {
         if (power == 0 || cadence == 0) {
-            return 0;
+            return "0";
         }
 
-        var torque = (power * NM_VALUE) / cadence;
+        var torque = power / ((cadence * 2 * Math.PI) / 60);
 
-        return torque.format("%d");
+        return torque.format(FORMAT);
+    }
+
+    public static function calculateInStatute(
+        power as Number,
+        cadence as Number
+    ) as String {
+        if (power == 0 || cadence == 0) {
+            return "0";
+        }
+
+        var torque = power / ((cadence * 2 * Math.PI) / 60) / 1.356;
+
+        return torque.format(FORMAT);
     }
 }

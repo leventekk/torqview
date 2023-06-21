@@ -28,6 +28,9 @@ class TorqViewField extends WatchUi.SimpleDataField {
         var power = _CalculatorService.getPower();
         var cadence = _CalculatorService.getCadence();
 
-        return Torque.calculateInNm(power, cadence);
+        if (SettingsService.isWeightSystemInMetric()) {
+            return Torque.calculateInNm(power, cadence) + " nm";
+        }
+        return Torque.calculateInStatute(power, cadence) + " ft/lb";
     }
 }
