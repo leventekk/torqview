@@ -6,6 +6,7 @@ class ValueView extends BaseView {
     private var _CalculatorService;
     private var _FontService;
     private var _TorqueService;
+    private var _LayoutService;
 
     private const FONT_SIZE = Graphics.FONT_TINY;
 
@@ -14,7 +15,8 @@ class ValueView extends BaseView {
         SettingsService,
         CalculatorService,
         FontService,
-        TorqueService
+        TorqueService,
+        LayoutService
     ) {
         BaseView.initialize(fieldId);
 
@@ -22,6 +24,7 @@ class ValueView extends BaseView {
         _CalculatorService = CalculatorService;
         _FontService = FontService;
         _TorqueService = TorqueService;
+        _LayoutService = LayoutService;
     }
 
     private function format() as String {
@@ -29,13 +32,8 @@ class ValueView extends BaseView {
         return value.format("%d");
     }
 
-    private function getYCenter(dc as Graphics.Dc) as Float {
-        var labelHeight = Graphics.getFontHeight(FONT_SIZE);
-        return dc.getHeight() / 2 + labelHeight / 1.5;
-    }
-
     private function setFontSize(dc as Graphics.Dc) as Void {
-        var labelHeight = Graphics.getFontHeight(FONT_SIZE);
+        var labelHeight = _LayoutService.getLabelHeight();
         var availableSpace = dc.getHeight() - labelHeight;
         var fontSize = _FontService.getRecommendedSize(availableSpace);
 
@@ -43,14 +41,12 @@ class ValueView extends BaseView {
     }
 
     private function setPosition(dc as Graphics.Dc) as Void {
-        _fieldView.setLocation(_fieldView.locX, getYCenter(dc));
+        _fieldView.setLocation(_fieldView.locX, _LayoutService.getYCenter(dc));
     }
 
     private function calculateValue() as Number or Float {
         var power = _CalculatorService.getPower();
         var cadence = _CalculatorService.getCadence();
-
-        // System.println("Cadence: " + cadence);
 
         if (_SettingsService.isWeightSystemInMetric()) {
             return _TorqueService.calculateInNm(power, cadence);

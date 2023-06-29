@@ -3,13 +3,19 @@ import Toybox.Graphics;
 
 class UnitView extends BaseView {
     private var _SettingsService;
+    private var _LayoutService;
 
     private const FONT_SIZE = Graphics.FONT_TINY;
 
-    public function initialize(fieldId as String, SettingsService) {
+    public function initialize(
+        fieldId as String,
+        SettingsService,
+        LayoutService
+    ) {
         BaseView.initialize(fieldId);
 
         _SettingsService = SettingsService;
+        _LayoutService = LayoutService;
     }
 
     private function format() as String {
@@ -17,17 +23,11 @@ class UnitView extends BaseView {
             return "NM";
         }
 
-        return "ft-lbs";
-    }
-
-    private function getYCenter(dc as Graphics.Dc) {
-        var labelHeight = Graphics.getFontHeight(FONT_SIZE);
-        return dc.getHeight() / 2 + labelHeight / 1.5;
+        return "LBS";
     }
 
     private function setPosition(dc as Graphics.Dc) {
-        var field = getField();
-        field.setLocation(field.locX, getYCenter(dc));
+        _fieldView.setLocation(_fieldView.locX, _LayoutService.getYCenter(dc));
     }
 
     public function render(dc as Graphics.Dc) as Void {

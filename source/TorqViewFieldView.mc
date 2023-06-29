@@ -17,14 +17,15 @@ class TorqViewFieldView extends WatchUi.DataField {
         SettingsService.getViewInterval()
     );
 
-    private var _UnitView = new UnitView(FIELD_UNIT, SettingsService);
+    private var _UnitView = new UnitView(FIELD_UNIT, SettingsService, Layout);
     private var _LabelView = new LabelView(FIELD_LABEL, SettingsService);
     private var _ValueView = new ValueView(
         FIELD_VALUE,
         SettingsService,
         _CalculatorService,
         Font,
-        Torque
+        Torque,
+        Layout
     );
     private var _BackgroundView = new BackgroundView(FIELD_BACKGROUND);
 
