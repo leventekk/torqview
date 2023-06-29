@@ -15,19 +15,27 @@ class CalculatorService {
         _interval = timerInterval;
     }
 
-    protected function calculate(list as Array<Number>) as Number {
+    private function calculate(list as Array<Number>) as Number? {
         var entries = list.size();
-        var summary = 0;
 
         if (entries < _interval) {
-            return 0;
+            return null;
         }
+
+        var summary = 0;
 
         for (var i = 0; i < entries; i++) {
             summary += list[i];
         }
 
         return summary / entries;
+    }
+
+    public function reset() as Void {
+        _cadenceEntries = [];
+        _powerEntries = [];
+        _power = 0;
+        _cadence = 0;
     }
 
     public function store(info as Activity.Info) {
@@ -38,14 +46,26 @@ class CalculatorService {
     }
 
     public function getCadence() {
-        _cadence = calculate(_cadenceEntries);
+        var calculatedCadence = calculate(_cadenceEntries);
+
+        if (calculatedCadence == null) {
+            return _cadence;
+        }
+
+        _cadence = calculatedCadence;
         _cadenceEntries = [];
 
         return _cadence;
     }
 
     public function getPower() {
-        _power = calculate(_powerEntries);
+        var calculatedPower = calculate(_powerEntries);
+
+        if (calculatedPower == null) {
+            return _power;
+        }
+
+        _power = calculatedPower;
         _powerEntries = [];
 
         return _power;

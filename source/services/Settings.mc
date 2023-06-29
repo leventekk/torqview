@@ -11,7 +11,6 @@ class SettingsService {
     }
 
     public static function isWeightSystemInMetric() as Boolean {
-        var settings = System.getDeviceSettings();
-        return settings.weightUnits == 0;
+        return System.getDeviceSettings().weightUnits == System.UNIT_METRIC;
     }
 }

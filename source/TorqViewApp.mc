@@ -12,7 +12,7 @@ class TorqViewApp extends Application.AppBase {
     public function onStop(state as Dictionary?) as Void {}
 
     public function getInitialView() as Array<Views or InputDelegates>? {
-        var view = new TorqViewField();
+        var view = new TorqViewFieldView();
         return [view] as Array<Views or InputDelegates>;
     }
 }
